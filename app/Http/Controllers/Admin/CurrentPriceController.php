@@ -36,7 +36,7 @@ class CurrentPriceController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'item' => 'required|string|min:3|max:255',
+            'item' => 'required|string|min:1|max:255',
             'unit' => 'required|string|min:1|max:25',
             'icon' => 'nullable|string|min:1',
             'price' => 'required|numeric',
@@ -76,7 +76,7 @@ class CurrentPriceController extends Controller
     public function update(Request $request, CurrentPrice $price)
     {
         $this->validate($request, [
-            'item' => 'required|string|min:3|max:255',
+            'item' => 'required|string|min:1|max:255',
             'unit' => 'required|string|min:1|max:25',
             'icon' => 'nullable|string|min:1',
             'price' => 'required|numeric',
