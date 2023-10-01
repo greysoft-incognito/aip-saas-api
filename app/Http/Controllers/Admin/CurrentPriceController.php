@@ -39,7 +39,8 @@ class CurrentPriceController extends Controller
             'item' => 'required|string|min:1|max:255',
             'unit' => 'required|string|min:1|max:25',
             'icon' => 'nullable|string|min:1',
-            'price' => 'required|numeric',
+            'price' => 'required_without:price_tons|numeric',
+            'price_tons' => 'required_without:price|numeric',
             'available_qty' => 'numeric',
         ]);
 
@@ -48,6 +49,7 @@ class CurrentPriceController extends Controller
         $price->unit = $request->unit;
         $price->icon = $request->icon;
         $price->price = $request->price;
+        $price->price_tons = $request->price_tons;
         $price->available_qty = $request->available_qty;
         $price->save();
 
@@ -79,7 +81,8 @@ class CurrentPriceController extends Controller
             'item' => 'required|string|min:1|max:255',
             'unit' => 'required|string|min:1|max:25',
             'icon' => 'nullable|string|min:1',
-            'price' => 'required|numeric',
+            'price' => 'required_without:price_tons|numeric',
+            'price_tons' => 'required_without:price|numeric',
             'available_qty' => 'numeric',
         ]);
 
@@ -87,6 +90,7 @@ class CurrentPriceController extends Controller
         $price->unit = $request->unit ?? $price->unit;
         $price->icon = $request->icon ?? $price->icon;
         $price->price = $request->price ?? $price->price;
+        $price->price_tons = $request->price_tons ?? $price->price_tons;
         $price->available_qty = $request->available_qty ?? $price->available_qty;
         $price->save();
 

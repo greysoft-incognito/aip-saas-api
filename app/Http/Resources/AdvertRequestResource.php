@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class SlideResource extends JsonResource
+class AdvertRequestResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,12 +18,13 @@ class SlideResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
-            'active' => $this->active,
             'line1' => $this->line1,
             'line2' => $this->line2,
             'line3' => $this->line3,
+            'status' => $this->status,
             'image_url' => $this->image_url,
-            'expires_at' => $this->expires_at,
+            'duration' => $this->duration,
+            'duration_readable' => now()->addHours($this->duration + 1)->longAbsoluteDiffForHumans(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('type')->nullable();
             $table->string('grade')->nullable()->default('D');
             $table->integer('quantity')->nullable();
+            $table->decimal('quantity_tons')->default(0.0)->nullable();
             $table->decimal('price')->default(0.0);
             $table->string('quantity_unit')->nullable()->default('KG');
             $table->string('location')->nullable();

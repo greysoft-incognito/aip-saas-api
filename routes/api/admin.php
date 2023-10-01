@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdvertRequestController;
 use App\Http\Controllers\Admin\AnnouncementController;
 use App\Http\Controllers\Admin\CurrentPriceController;
 use App\Http\Controllers\Admin\DiseaseOutbreakController;
@@ -19,4 +20,5 @@ Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->name('admin.')->g
     Route::apiResource('announcements', AnnouncementController::class);
     Route::apiResource('soil/requirements', SoilRequirementController::class);
     Route::apiResource('disease/outbreaks', DiseaseOutbreakController::class);
+    Route::apiResource('advert/requests', AdvertRequestController::class)->parameter('requests', 'advert');
 });

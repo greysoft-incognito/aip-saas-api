@@ -6,9 +6,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use ToneflixCode\LaravelFileable\Traits\Fileable;
 
-class MarketItem extends Model
+class AdvertRequest extends Model
 {
     use HasFactory;
     use Fileable;
@@ -23,11 +24,7 @@ class MarketItem extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'price' => 'float',
-        'active' => 'boolean',
-        'approved' => 'boolean',
-        'quantity' => 'integer',
-        'quantity_tons' => 'float',
+        'duration' => 'integer',
     ];
 
     public function registerFileable()
@@ -40,21 +37,12 @@ class MarketItem extends Model
     public static function registerEvents()
     {
         static::creating(function ($model) {
-            $slug = str($model->name . $model->type . '-' . rand(1000, 9999))->slug();
-            $model->slug = $model->slug ?? (MarketItem::whereSlug($slug)->exists()
-                ? $slug . '-' . rand(100, 999)
-                : $slug
-            );
+            $model->status = $model->status ?? 'draft';
         });
     }
 
-    public function user(): BelongsTo
-    {
-        return $this->belongsTo(User::class);
-    }
-
     /**
-     * Get the items's avatar
+     * Get the slides's avatar
      *
      * @return string
      */
@@ -65,8 +53,17 @@ class MarketItem extends Model
         );
     }
 
-    public function scopeIsAvailable($query, $status = true)
+    public function slide(): HasOne
     {
-        return $query->whereApproved($status)->whereActive($status);
+        return $this->hasOne(Slide::class)->withDefault(function () {
+            return [
+                'title' => 'Pending'
+            ];
+        })->whereNotNull('expires_at');
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }

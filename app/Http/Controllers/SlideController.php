@@ -19,7 +19,11 @@ class SlideController extends Controller
     {
         $query = Slide::query();
         $query->whereActive(true);
-        $query->latest();
+        $query->when($request->has('ads'), function ($q) {
+            $q->isAdv(true, true);
+        })->when(!$request->has('ads'), function ($q) {
+            $q->isAdv(false);
+        })->latest();
 
         $slides = $query->paginate($request->get('limit', '15'));
 

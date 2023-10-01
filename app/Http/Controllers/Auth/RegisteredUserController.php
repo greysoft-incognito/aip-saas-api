@@ -39,7 +39,10 @@ class RegisteredUserController extends Controller
             'country' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'type' => ['required', 'in:farmer,processsor,marketer,transporter,offtaker,researcher'],
+            'type' => [
+                'required',
+                'in:farmer,processsor,marketer,transporter,offtaker,researcher,herbicide,fertiliser,washer,slicer,dryer,tractor,bagging,dryer'
+            ],
         ], [
             'name.required_without' => 'Please enter your fullname.'
         ], [

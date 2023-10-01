@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use ToneflixCode\LaravelFileable\Traits\Fileable;
 
 class Slide extends Model
@@ -23,6 +24,7 @@ class Slide extends Model
      */
     protected $casts = [
         'active' => 'boolean',
+        'expires_at' => 'datetime'
     ];
 
     public function registerFileable()
@@ -35,11 +37,11 @@ class Slide extends Model
     public static function registerEvents()
     {
         static::creating(function ($model) {
-            $slug = $model->title . '-' . $model->id;
-            $model->slug = $model->slug ?? (Slide::whereSlug($slug)->exists()
-                ? $slug . rand(100, 999)
+            $slug = $model->title . '-' . rand(100, 999);
+            $model->slug = str($model->slug ?? (Slide::whereSlug($slug)->exists()
+                ? $slug . '-' . rand(100, 999)
                 : $slug
-            );
+            ))->slug();
         });
     }
 
@@ -53,5 +55,22 @@ class Slide extends Model
         return Attribute::make(
             get: fn () => $this->media_file,
         );
+    }
+
+    public function scopeIsAdv($query, $isAdv = true, $checkExpiry = false)
+    {
+        if ($isAdv) {
+            $query->whereNotNull('expires_at');
+            if ($checkExpiry) {
+                $query->where('expires_at', '>', now());
+            }
+        } else {
+            $query->whereNull('expires_at');
+        }
+    }
+
+    public function advertRequest(): BelongsTo
+    {
+        return $this->belongsTo(AdvertRequest::class);
     }
 }

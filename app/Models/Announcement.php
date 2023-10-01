@@ -35,7 +35,7 @@ class Announcement extends Model
     public static function registerEvents()
     {
         static::creating(function ($model) {
-            $slug = $model->title . '-' . $model->id;
+            $slug = str($model->title . '-' . $model->id)->slug();
             $model->slug = $model->slug ?? (Announcement::whereSlug($slug)->exists()
                 ? $slug . rand(100, 999)
                 : $slug

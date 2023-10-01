@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\EnumsAndConsts\HttpStatus;
+use App\Http\Resources\CurrentPriceCollection;
 use App\Http\Resources\UserLocationCollection;
 use App\Models\CurrentPrice;
 use App\Models\DiseaseOutbreak;
@@ -27,15 +28,22 @@ class OverviewController extends Controller
             'status_code' => HttpStatus::OK,
             'data' => [
                 'stats' => [
+                    'dryers' => User::whereType('dryer')->count(),
+                    'bagging' => User::whereType('bagging')->count(),
+                    'slicers' => User::whereType('slicer')->count(),
+                    'washers' => User::whereType('washer')->count(),
                     'farmers' => User::whereType('farmer')->count(),
+                    'tractors' => User::whereType('tractor')->count(),
                     'marketers' => User::whereType('marketer')->count(),
                     'offtakers' => User::whereType('offtaker')->count(),
+                    'herbicides' => User::whereType('herbicide')->count(),
                     'processsors' => User::whereType('processsor')->count(),
                     'researchers' => User::whereType('researcher')->count(),
                     'transporters' => User::whereType('transporter')->count(),
+                    'fertilisers' => User::whereType('fertiliser')->count(),
                     'disease_outbreaks' => DiseaseOutbreak::whereActive(true)->count(),
                     'soil_requirements' => SoilRequirement::query()->count(),
-                    'current_prices' => CurrentPrice::get(),
+                    'current_prices' => new CurrentPriceCollection(CurrentPrice::get()),
                 ]
             ],
         ]);

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->text('line2')->nullable();
             $table->text('line3')->nullable();
             $table->boolean('active')->default(false);
+            $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
     }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('icon')->nullable()->default('fa-solid fa-wheat-awn');
             $table->string('unit')->nullable()->default('bags');
             $table->decimal('price')->default(0.0);
+            $table->decimal('price_tons')->default(0.0);
             $table->integer('available_qty')->default(0);
             $table->timestamps();
         });

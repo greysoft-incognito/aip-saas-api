@@ -25,6 +25,7 @@ class MarketItemController extends Controller
             $q->where(function (Builder $q) use ($request) {
                 $q->where('name', 'like', "%{$request->search}%");
                 $q->orWhere('type', 'like', "%{$request->search}%");
+                $q->orWhere('grade', $request->search);
                 $q->orWhereHas('user', function ($q) use ($request) {
                     $q->where('firstname', 'like', "%{$request->search}%");
                     $q->orWhereRaw("CONCAT_WS(' ', firstname, lastname) LIKE '%$request->search%'");
@@ -59,17 +60,18 @@ class MarketItemController extends Controller
 
         $this->validate($request, [
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
-            'price' => 'required|numeric',
-            'name' => 'required|string|min:3|max:255',
+            'price' => 'nullable|numeric',
+            'name' => 'nullable|string|min:3|max:255',
             'type' => 'nullable|string|min:3|max:520',
-            'grade' => 'nullable|string|min:1|max:55',
+            'grade' => 'required|string|min:1|max:1|in:A,B,C',
             'location' => 'nullable|string|min:1',
             'address' => ['required', 'string', 'min:5', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'quantity' => 'required|numeric|min:1',
-            'quantity_unit' => 'required|string|min:1',
+            'quantity_tons' => 'required|numeric|min:1',
+            'quantity_unit' => 'nullable|string|min:1',
             'active' => 'nullable|boolean',
         ]);
 
@@ -84,6 +86,7 @@ class MarketItemController extends Controller
         $item->state = $request->state;
         $item->city = $request->city;
         $item->quantity = $request->quantity;
+        $item->quantity_tons = $request->quantity_tons;
         $item->quantity_unit = $request->quantity_unit;
         $item->active = $request->active ?? true;
         $item->approved = true;
@@ -115,17 +118,18 @@ class MarketItemController extends Controller
     {
         $this->validate($request, [
             'image' => 'nullable|image|mimes:jpg,png,jpeg,gif',
-            'price' => 'required|numeric',
-            'name' => 'required|string|min:3|max:255',
+            'price' => 'nullable|numeric',
+            'name' => 'nullable|string|min:3|max:255',
             'type' => 'nullable|string|min:3|max:520',
-            'grade' => 'nullable|string|min:1|max:55',
+            'grade' => 'required|string|min:1|max:1|in:A,B,C',
             'location' => 'nullable|string|min:1',
             'address' => ['required', 'string', 'min:5', 'max:255'],
             'country' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
             'quantity' => 'required|numeric|min:1',
-            'quantity_unit' => 'required|string|min:1',
+            'quantity_tons' => 'required|numeric|min:1',
+            'quantity_unit' => 'nullable|string|min:1',
             'active' => 'nullable|boolean',
         ]);
 
@@ -140,6 +144,7 @@ class MarketItemController extends Controller
         $item->state = $request->state ?? $item->state;
         $item->city = $request->city ?? $item->city;
         $item->quantity = $request->quantity ?? $item->quantity;
+        $item->quantity_tons = $request->quantity_tons ?? $item->quantity_tons;
         $item->quantity_unit = $request->quantity_unit ?? $item->quantity_unit;
         $item->active = $request->active ?? $item->active ?? true;
         $item->approved = $request->approved ?? $item->approved ?? true;

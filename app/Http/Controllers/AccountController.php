@@ -151,6 +151,10 @@ class AccountController extends Controller
             'city' => ['required', 'string', 'max:255'],
             'about' => ['nullable', 'string'],
             'location' => ['nullable', 'string', 'max:34'],
+            'type' => [
+                'required',
+                'in:farmer,processsor,marketer,transporter,offtaker,researcher,herbicide,fertiliser,washer,slicer,dryer,tractor,bagging,dryer'
+            ],
         ], [], [
             'phone' => 'Phone Number',
             'email' => 'Email Address',
@@ -166,6 +170,7 @@ class AccountController extends Controller
         $user->state = $request->state ?? $user->state;
         $user->city = $request->city ?? $user->city;
         $user->about = $request->about ?? $user->about;
+        $user->type = $request->type ?? $user->type;
 
         $user->save();
 

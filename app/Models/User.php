@@ -104,6 +104,11 @@ class User extends Authenticatable
         });
     }
 
+    public function advertRequests(): HasMany
+    {
+        return $this->hasMany(AdvertRequest::class);
+    }
+
     /**
      * save the user's location data
      *

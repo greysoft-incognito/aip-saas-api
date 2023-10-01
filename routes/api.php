@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AccountController;
+use App\Http\Controllers\AdvertRequestController;
 use App\Http\Controllers\AnnouncementController;
 use App\Http\Controllers\CurrentPriceController;
 use App\Http\Controllers\DiseaseOutbreakController;
@@ -60,4 +61,5 @@ Route::middleware('auth:sanctum')->prefix('account')->name('account.')->group(fu
     Route::apiResource('/', AccountController::class)
         ->only(['index', 'update', 'store'])
         ->parameter('', 'user');
+    Route::apiResource('advert/requests', AdvertRequestController::class);
 });

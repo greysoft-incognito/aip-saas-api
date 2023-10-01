@@ -19,11 +19,15 @@ class SlideController extends Controller
     public function index(Request $request)
     {
         $query = Slide::query();
-        $query->latest();
+        $query->when($request->has('ads'), function ($q) {
+            $q->isAdv(true, true);
+        })->when(!$request->has('ads'), function ($q) {
+            $q->isAdv(false);
+        })->latest();
 
-        $announcements = $query->paginate($request->get('limit', '15'));
+        $slides = $query->paginate($request->get('limit', '15'));
 
-        return (new SlideCollection($announcements))->additional([
+        return (new SlideCollection($slides))->additional([
             'message' => HttpStatus::message(HttpStatus::OK),
             'status' => 'success',
             'status_code' => HttpStatus::OK,
@@ -42,6 +46,7 @@ class SlideController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'active' => 'nullable|boolean',
+            'expires_at' => 'nullable|string',
         ]);
 
         $slide = new Slide();
@@ -49,7 +54,9 @@ class SlideController extends Controller
         $slide->line1 = $request->line1;
         $slide->line2 = $request->line2;
         $slide->line3 = $request->line3;
+        $slide->line3 = $request->line3;
         $slide->active = $request->active ?? true;
+        $slide->expires_at = $request->expires_at;
         $slide->save();
 
         return (new SlideResource($slide))->additional([
@@ -83,6 +90,7 @@ class SlideController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'active' => 'nullable|boolean',
+            'expires_at' => 'nullable|string',
         ]);
 
         $slide->title = $request->title ?? $slide->title;
@@ -90,6 +98,7 @@ class SlideController extends Controller
         $slide->line2 = $request->line2 ?? $slide->line2;
         $slide->line3 = $request->line3 ?? $slide->line3;
         $slide->active = $request->active ?? $slide->active;
+        $slide->expires_at = $request->expires_at ?? $slide->expires_at;
         $slide->save();
 
         return (new SlideResource($slide))->additional([
