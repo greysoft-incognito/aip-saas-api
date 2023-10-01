@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('line3')->nullable();
             $table->boolean('active')->default(false);
             $table->timestamp('expires_at')->nullable();
+            $table->boolean('hide_texts')->default(false);
             $table->timestamps();
         });
     }

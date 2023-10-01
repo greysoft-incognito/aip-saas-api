@@ -46,6 +46,7 @@ class SlideController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'active' => 'nullable|boolean',
+            'hide_texts' => 'nullable|boolean',
             'expires_at' => 'nullable|string',
         ]);
 
@@ -56,6 +57,7 @@ class SlideController extends Controller
         $slide->line3 = $request->line3;
         $slide->line3 = $request->line3;
         $slide->active = $request->active ?? true;
+        $slide->hide_texts = $request->hide_texts;
         $slide->expires_at = $request->expires_at;
         $slide->save();
 
@@ -90,6 +92,7 @@ class SlideController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'active' => 'nullable|boolean',
+            'hide_texts' => 'nullable|boolean',
             'expires_at' => 'nullable|string',
         ]);
 
@@ -98,6 +101,7 @@ class SlideController extends Controller
         $slide->line2 = $request->line2 ?? $slide->line2;
         $slide->line3 = $request->line3 ?? $slide->line3;
         $slide->active = $request->active ?? $slide->active;
+        $slide->hide_texts = $request->hide_texts ?? $slide->hide_texts;
         $slide->expires_at = $request->expires_at ?? $slide->expires_at;
         $slide->save();
 

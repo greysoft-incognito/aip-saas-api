@@ -12,6 +12,10 @@ return [
             'path' => 'media/banners/',
             'default' => 'default.jpg',
         ],
+        'slide' => [
+            'path' => 'media/banners/',
+            'default' => 'default.png',
+        ],
         'default' => [
             'path' => 'media/default/',
             'default' => 'default.png',

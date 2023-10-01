@@ -25,12 +25,22 @@ class AdvertRequest extends Model
      */
     protected $casts = [
         'duration' => 'integer',
+        'hide_texts' => 'boolean',
+    ];
+
+    /**
+     * The model's attributes.
+     *
+     * @var array<string, string>
+     */
+    protected $attributes = [
+        'hide_texts' => false,
     ];
 
     public function registerFileable()
     {
         $this->fileableLoader([
-            'image' => 'banner',
+            'image' => 'slide',
         ]);
     }
 

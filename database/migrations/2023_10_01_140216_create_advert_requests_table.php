@@ -21,6 +21,7 @@ return new class extends Migration
             $table->text('line3')->nullable();
             $table->integer('duration')->default(24)->nullable();
             $table->string('status')->nullable()->default('draft');
+            $table->boolean('hide_texts')->default(false);
             $table->timestamps();
         });
 

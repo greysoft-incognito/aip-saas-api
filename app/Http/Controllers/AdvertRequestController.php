@@ -46,6 +46,7 @@ class AdvertRequestController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'duration' => 'nullable|numeric|min:1',
+            'hide_texts' => 'nullable|boolean',
         ]);
 
         $adv = $user->advertRequests()->make();
@@ -55,6 +56,7 @@ class AdvertRequestController extends Controller
         $adv->line2 = $request->line2;
         $adv->line3 = $request->line3;
         $adv->line3 = $request->line3;
+        $adv->hide_texts = $request->hide_texts;
         $adv->duration = $request->duration ?? 24;
         $adv->save();
 
@@ -99,12 +101,14 @@ class AdvertRequestController extends Controller
             'line2' => 'nullable|string|min:3|max:255',
             'line3' => 'nullable|string|min:3|max:255',
             'duration' => 'nullable|numeric|min:1',
+            'hide_texts' => 'nullable|boolean',
         ]);
 
         $adv->title = $request->title ?? $adv->title;
         $adv->line1 = $request->line1 ?? $adv->line1;
         $adv->line2 = $request->line2 ?? $adv->line2;
         $adv->line3 = $request->line3 ?? $adv->line3;
+        $adv->hide_texts = $request->hide_texts ?? $adv->hide_texts;
         $adv->duration = $request->duration ?? $adv->duration;
 
         if ($request->send_now) {

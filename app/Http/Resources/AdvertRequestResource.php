@@ -24,6 +24,7 @@ class AdvertRequestResource extends JsonResource
             'status' => $this->status,
             'image_url' => $this->image_url,
             'duration' => $this->duration,
+            'hide_texts' => $this->hide_texts,
             'duration_readable' => now()->addHours($this->duration + 1)->longAbsoluteDiffForHumans(),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

@@ -24,13 +24,23 @@ class Slide extends Model
      */
     protected $casts = [
         'active' => 'boolean',
-        'expires_at' => 'datetime'
+        'expires_at' => 'datetime',
+        'hide_texts' => 'boolean',
+    ];
+
+    /**
+     * The model's attributes.
+     *
+     * @var array<string, string>
+     */
+    protected $attributes = [
+        'hide_texts' => false,
     ];
 
     public function registerFileable()
     {
         $this->fileableLoader([
-            'image' => 'banner',
+            'image' => 'slide',
         ]);
     }
 

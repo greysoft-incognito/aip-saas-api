@@ -23,6 +23,7 @@ class SlideResource extends JsonResource
             'line2' => $this->line2,
             'line3' => $this->line3,
             'image_url' => $this->image_url,
+            'hide_texts' => $this->hide_texts,
             'expires_at' => $this->expires_at,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
