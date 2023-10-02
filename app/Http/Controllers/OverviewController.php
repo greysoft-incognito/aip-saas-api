@@ -43,7 +43,7 @@ class OverviewController extends Controller
                     'fertilisers' => User::whereType('fertiliser')->count(),
                     'disease_outbreaks' => DiseaseOutbreak::whereActive(true)->count(),
                     'soil_requirements' => SoilRequirement::query()->count(),
-                    'current_prices' => new CurrentPriceCollection(CurrentPrice::get()),
+                    'current_prices' => new CurrentPriceCollection(CurrentPrice::orderBy('item')->get()),
                 ]
             ],
         ]);
