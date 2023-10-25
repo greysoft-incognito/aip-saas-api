@@ -27,7 +27,7 @@ trait Extendable
         $info = [
             'api' => [
                 'name' => 'Ginger IP API',
-                'version' => env('APP_VERSION', config('app.api.version.code', '1.0.0')),
+                'version' => env('APP_VERSION', '1.0.0'),
                 'author' => 'Greysoft Technologies',
                 'updated' => env('LAST_UPDATE', '2022-09-20 02:27:53'),
             ],
