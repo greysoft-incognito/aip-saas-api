@@ -23,7 +23,11 @@ class OverviewController extends Controller
 {
     public function index(Request $request)
     {
-        $stats = str($request->get('visible', join(',', [
+        $groups = $request->group
+            ? (User::$allowedGroups[$request->group] ?: [array_key_first(User::$allowedGroups)])
+            : [];
+
+        $stats = str($request->get('visible', join(',', $groups) ?: join(',', [
             'farmers',
             'aggregators',
             'suppliers',
