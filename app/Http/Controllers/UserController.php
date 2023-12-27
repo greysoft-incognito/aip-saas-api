@@ -41,6 +41,8 @@ class UserController extends Controller
             }
         })->when($request->type, function (Builder $q) use ($request) {
             $q->where("type", $request->type);
+        })->when($request->role, function (Builder $q) use ($request) {
+            $q->where("role", $request->role);
         })->latest();
 
         $users = $query->paginate($request->get('limit', '15'));

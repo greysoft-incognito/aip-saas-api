@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Models\UserLocation;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\ResourceCollection;
 use MatanYadaev\EloquentSpatial\Objects\Geometry;
 use MatanYadaev\EloquentSpatial\Objects\LineString;
 use MatanYadaev\EloquentSpatial\Objects\Point;
@@ -20,33 +21,53 @@ use MatanYadaev\EloquentSpatial\SpatialBuilder;
 
 class OverviewController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $stats = str($request->get('visible', join(',', [
+            'farmers',
+            'aggregators',
+            'suppliers',
+            'processors',
+            'offtakers',
+            'logistics',
+            'researchers',
+            'disease_outbreaks',
+            'soil_requirements',
+            'current_prices'
+        ])))->explode(',')->mapWithKeys(function ($key) use ($request) {
+            if ($request->group) {
+                return [$key => self::counter($key, $request->group)];
+            }
+
+            return [$key => self::counter($request->group, $key)];
+        });
+
         return $this->buildResponse([
             'message' => 'OK',
             'status' => 'success',
             'status_code' => HttpStatus::OK,
             'data' => [
-                'stats' => [
-                    'dryers' => User::whereType('dryer')->count(),
-                    'bagging' => User::whereType('bagging')->count(),
-                    'slicers' => User::whereType('slicer')->count(),
-                    'washers' => User::whereType('washer')->count(),
-                    'farmers' => User::whereType('farmer')->count(),
-                    'tractors' => User::whereType('tractor')->count(),
-                    'marketers' => User::whereType('marketer')->count(),
-                    'offtakers' => User::whereType('offtaker')->count(),
-                    'herbicides' => User::whereType('herbicide')->count(),
-                    'processsors' => User::whereType('processsor')->count(),
-                    'researchers' => User::whereType('researcher')->count(),
-                    'transporters' => User::whereType('transporter')->count(),
-                    'fertilisers' => User::whereType('fertiliser')->count(),
-                    'disease_outbreaks' => DiseaseOutbreak::whereActive(true)->count(),
-                    'soil_requirements' => SoilRequirement::query()->count(),
-                    'current_prices' => new CurrentPriceCollection(CurrentPrice::orderBy('item')->get()),
-                ]
+                'stats' => $stats
             ],
         ]);
+    }
+
+    private static function counter(?string $type, ?string $group = null): int|ResourceCollection
+    {
+        if ($group === 'disease_outbreaks') {
+            return DiseaseOutbreak::whereActive(true)->count();
+        } elseif ($group === 'soil_requirements') {
+            return SoilRequirement::query()->count();
+        } elseif ($group === 'current_prices') {
+            return new CurrentPriceCollection(CurrentPrice::orderBy('item')->get());
+        }
+        return User::query()
+        ->when($group, function (Builder $q) use ($group) {
+            $q->where('group', $group);
+        })
+        ->when($type, function (Builder $q) use ($type) {
+            $q->where('type', $type);
+        })->count();
     }
 
     /**

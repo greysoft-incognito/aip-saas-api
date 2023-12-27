@@ -26,6 +26,57 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public static $userTitles = [
+        "farmers" => "Farmers",
+        "aggregators" => "Aggregators",
+        "suppliers" => "Suppliers",
+        "processors" => "Processors",
+        "offtakers" => "Offtakers",
+        "cooperatives" => "Cooperatives",
+        "corporate" => "Corporate",
+        "outgrowers" => "Outgrowers",
+        "individuals" => "Small Scale (Individuals)",
+        "corporate_ag" => "Large Scale (Corporate)",
+        "extension" => "Extension Services",
+        "mechanization" => "Mechanization",
+        "seeds" => "Seeds",
+        "fertilizers" => "Fertilizers",
+        "herbicides" => "Herbicides",
+        "small" => "Small Scale (1-3 tons monthly)",
+        "medium" => "Medium Scale (3-10 tons monthly)",
+        "large" => "Large Scale (Above 10 tons monthly)",
+        "local" => "Local",
+        "international" => "International",
+        "logistics" => "Logistics",
+        "researchers" => "Research Institutions",
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, array>
+     */
+    public static $allowedGroups = [
+        "farmers" => ["cooperatives", "corporate", "outgrowers"],
+        "aggregators" => ["individuals", "corporate_ag"],
+        "suppliers" => [
+          "extension",
+          "mechanization",
+          "seeds",
+          "fertilizers",
+          "herbicides",
+        ],
+        "processors" => ["small", "medium", "large"],
+        "offtakers" => ["local", "international"],
+        "logistics" => [],
+        "researchers" => [],
+    ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'firstname',
         'lastname',
@@ -34,6 +85,7 @@ class User extends Authenticatable
         'state',
         'city',
         'type',
+        'group',
         'email',
         'phone',
         'username',

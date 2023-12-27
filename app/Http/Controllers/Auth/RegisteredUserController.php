@@ -30,6 +30,8 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
+        $group = $request->get('group', array_key_first(User::$allowedGroups));
+
         Validator::make($request->all(), [
             'name' => ['required_without:firstname', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
@@ -39,10 +41,8 @@ class RegisteredUserController extends Controller
             'country' => ['required', 'string', 'max:255'],
             'state' => ['required', 'string', 'max:255'],
             'city' => ['required', 'string', 'max:255'],
-            'type' => [
-                'required',
-                'in:farmer,processsor,marketer,transporter,offtaker,researcher,herbicide,fertiliser,washer,slicer,dryer,tractor,bagging,dryer'
-            ],
+            'group' => [ 'required', 'in:' . join(',', array_keys(User::$allowedGroups))],
+            'type' => [ 'required', 'in:' . join(',', User::$allowedGroups[$group] ?: [$group] ?: [$group])],
         ], [
             'name.required_without' => 'Please enter your fullname.'
         ], [
@@ -64,11 +64,15 @@ class RegisteredUserController extends Controller
     public function createUser(Request $request)
     {
         $firstname = str($request->get('name'))->explode(' ')->first();
-        $lastname = str($request->get('name'))->explode(' ')->last(fn($n)=> $n !== $firstname);
+        $lastname = str($request->get('name'))->explode(' ')->last(fn($n)=> $n !== $firstname, '');
+
+        $group = $request->get('group', array_key_first(User::$allowedGroups));
+        $type = $request->get('type', array_shift(User::$allowedGroups[$group]));
 
         $user = User::create([
             'role' => 'user',
-            'type' => $request->get('type', 'farmer'),
+            'type' => $type,
+            'group' => $group,
             'firstname' => $request->get('firstname', $firstname),
             'lastname' => $request->get('lastname', $lastname),
             'email' => $request->get('email'),
