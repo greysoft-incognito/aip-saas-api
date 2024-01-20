@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
 
         if (\App\Models\User::where('role', 'admin')->doesntExist()) {
             \App\Models\User::factory()->create([
-                 'name' => 'Sustem Admin',
+                 'firstname' => 'System',
+                 'lastname' => 'Admin',
                  'email' => 'admin@greysoft.ng',
                  'role' => 'admin'
             ]);
